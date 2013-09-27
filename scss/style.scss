@@ -1,0 +1,14 @@
+@import "compass/css3";
+
+body {
+  background: hsl(10,25,15);
+}
+
+
+canvas {
+  border: 1px solid red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+}
