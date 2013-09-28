@@ -1,22 +1,86 @@
 @import "base";
 
 body {
-  background: hsl(10,25,15);
+  background: $background;
 }
 
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: transparent;
-}
+.game {
 
-#background {
-  z-index: -2;
-}
-#main {
-  z-index: -1;
-}
-#ship {
-  z-index: 0;
+  border: 5px solid darken($background, 5%);
+
+  .info {
+    height: 40px;
+    background: $background;
+    position: relative;
+    > div {
+      position: absolute;
+      top: 5px;
+      color: #FF7F00;
+      font-family: sans-serif;
+      cursor: default;
+      font-size: 20px;
+    }
+    .score {
+      left: 10px;
+      > #score {
+        
+      }
+    }
+
+    .level {
+      right: 10px;
+      > #level {
+        
+      }
+    }
+    
+  }
+
+  width: 360px;
+  height: 520px;
+  margin: 10px auto;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 10px $background;
+
+  position: relative;
+  //z-index: 10;
+  canvas {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: transparent;
+  }
+
+  #background {
+    //z-index: 20;
+  }
+  #main {
+    //z-index: 21;
+  }
+  #ship {
+    //z-index: 22;
+  }
+
+  .game-over {
+    position: absolute;
+    top: 180px;
+    left: 100px;
+    color: #FF7F00;
+    text-shadow: 0 0 5px black;
+    font-family: sans-serif;
+    font-size: 30px;
+    cursor: default;
+    display: none;
+    span {
+      font-size: 20px;
+      cursor: pointer;
+      position: relative;
+      left: 50px;
+      &:hover {
+        color: #FFD700;
+      }
+    }
+  }
+
 }

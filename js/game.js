@@ -59,7 +59,7 @@ var imageRepository = new function() {
 
 
   // Set images src  
-  this.background.src = "images/bg2.jpg";
+  this.background.src = "images/bg.jpg";
   this.spaceship.src = "images/ship.png";
   this.spaceshipDown.src = "images/shipDown.png";
   this.bullet.src = "images/bullet.png";

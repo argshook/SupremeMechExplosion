@@ -7,18 +7,28 @@
   <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
 </head>
 <body>
-  <canvas id="background" width="360" height="480">
-  	Whoops, looks like your browser does not support some thing this game need. &lt;canvas&gt; to be specific.
-	</canvas>
- <!-- The canvas for all enemy ships and bullets -->
-  <canvas id="main" width="360" height="480">
-  </canvas>
-  <!-- The canvas the ship uses (can only move up one forth the screen.) -->
-  <canvas id="ship" width="360" height="480">
 
-
-
-  <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js'></script>
+<div class="game">
+    <div class="info">
+      <div class="score">Score: <span id="score"></span></div>
+      <div class="level">Level <span id="level">1</span></div>
+    </div>
+    <div class="canvas">
+      <canvas id="background" width="360" height="480">
+        Whoops, looks like your browser does not support some thing this game need. &lt;canvas&gt; to be specific.
+      </canvas>
+     <!-- The canvas for all enemy ships and bullets -->
+      <canvas id="main" width="360" height="480">
+      </canvas>
+      <!-- The canvas the ship uses (can only move up one forth the screen.) -->
+      <canvas id="ship" width="360" height="480">
+      </canvas>
+      <div class="game-over" id="game-over">GAME OVER
+        <p><span onclick="game.restart()">Again!</span></p>
+      </div>
+    </div>
+</div>
   <script src="js/index.js"></script>
+  <script src="js/game.js"></script>
 </body>
 </html>
