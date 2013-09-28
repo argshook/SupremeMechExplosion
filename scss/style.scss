@@ -2,85 +2,219 @@
 
 body {
   background: $background;
+  font-family: 'Bubbler One', sans-serif;
+}
+
+
+h2.title {
+  display: block;
+  max-width: 500px;
+  color: $light;
+  font-size: 2.5em;
+  text-align: center;
+  letter-spacing: 3px;
+  margin: 20px auto;
+  font-family: 'Kavoon', cursive;
 }
 
 .game {
 
   border: 5px solid darken($background, 5%);
-
+  width: 360px;
+  height: 480px;
+  margin: 30px auto;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 5px lighten($background, 10%);
+  position: relative;
+  
   .info {
-    height: 40px;
-    background: $background;
-    position: relative;
+
+    @include user-select(none);
+
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    top: 0;
+    z-index: 200;
+    //background: $background;
+    @include linear-gradient(fade-out($background, 0.2), darken(fade-out($background, 0.2), 6%));
+    box-shadow: 0 0 5px 1px $background;
     > div {
       position: absolute;
       top: 5px;
-      color: #FF7F00;
-      font-family: sans-serif;
+      color: $textColor;
       cursor: default;
-      font-size: 20px;
+      font-size: 1.2em;
     }
-    .score {
-      left: 10px;
-      > #score {
-        
+
+    .audioMuter {
+      width: 100px;
+      left: 50%;
+      margin-left: -50px;
+      &:hover {
+        text-shadow: 0 0 2px $light;
+      }
+      &:active {
+        color: darken($textColor, 30%);
       }
     }
 
     .level {
-      right: 10px;
+      left: 10px;
       > #level {
         
       }
     }
-    
+    .score {
+      right: 10px;
+      > #score {
+        
+      }
+    }
   }
 
-  width: 360px;
-  height: 520px;
-  margin: 10px auto;
-  overflow: hidden;
-  border-radius: 5px;
-  box-shadow: 0 0 10px $background;
-
-  position: relative;
-  //z-index: 10;
-  canvas {
+  #loading {
     position: absolute;
-    top: 40px;
-    left: 0;
-    background: transparent;
+    display: block;
+    z-index: 1000;
+    font-size: 3em;
+    text-align: center;
+    line-height: 480px;
+    vertical-align: middle;
+    color: $light;
+    text-shadow: 0 1px 1px darken($background, 3%);
+    width: 100%;
+    height: 100%;
+    background: $background;
+    cursor: pointer;
+    @include transition(all 0.2s linear);
+    &:hover {
+      box-shadow: 0 0 10px 2px $light inset;
+    }
   }
 
-  #background {
-    //z-index: 20;
+  .canvas {
+
+    @include user-select(none);
+
+    position: absolute;
+    width: 100%;
+    height: 480px;
+    top: 0;
+    z-index: 100;
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: transparent;
+    }
+
+    #background {
+      //z-index: 20;
+    }
+    #main {
+      //z-index: 21;
+    }
+    #ship {
+      //z-index: 22;
+    }
   }
-  #main {
-    //z-index: 21;
-  }
-  #ship {
-    //z-index: 22;
+
+  #level-up {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 40px;
+    margin: -20px 0 0 -50px;
+    display: block;
+    font-size: 1.3em;
+    color: white;
+    text-align: center;
+    @include animation(levelUp 0.8s ease-in-out);
+    display: none; 
   }
 
   .game-over {
     position: absolute;
-    top: 180px;
-    left: 100px;
-    color: #FF7F00;
+    top: 50%;
+    left: 50%;
+    width: 180px;
+    height: 130px;
+    margin: -90px 0 0 -120px;
+    color: $textColor;
     text-shadow: 0 0 5px black;
-    font-family: sans-serif;
-    font-size: 30px;
+    
+    text-align: center;
+    
+    font-size: 2em;
     cursor: default;
     display: none;
-    span {
+    
+    padding: 30px;
+    
+    border: 5px solid fade-out($background, 0.4);
+    background: fade-out($background, 0.5);
+    border-radius: 15px;
+    
+    @include animation(gameOver 0.3s ease-out);
+    
+    p {
+      font-size: 0.7em;
+      &.small {
+        font-size: 0.4em;
+        color: fade-out($textColor, 0.4);
+      }
+    }
+    
+    .restartBtn {
       font-size: 20px;
       cursor: pointer;
-      position: relative;
-      left: 50px;
+      border: 2px solid darken($background, 10%);
+      padding: 10px 30px;
+      border-radius: 3px;
+      background: $background;
+      font-family: 'Kavoon', cursive;
+      box-shadow: 1px 1px 1px 0 $background, 2px 2px 1px 0 $background, 3px 3px 1px 0 $background;
+      @include transition(all 0.2s ease-out);
+      &:active {
+        @include transform(translate(3px, 3px));
+        box-shadow: none;
+      }
       &:hover {
         color: #FFD700;
       }
     }
   }
+}
 
+.content {
+  max-width: 550px;
+  margin: 30px auto;
+  padding: 10px;
+  background: lighten($background, 5%);
+  border-radius: 5px;
+  
+  p {
+    font-size: 1.1em;
+    color: $light;
+    text-shadow: 0 1px 1px $background;
+  }
+  code {
+    background: $background;
+    padding: 3px;
+    border-radius: 3px;
+    margin: 2px;
+    font-family: monospace;
+  }
+  
+  a {
+    color: $light;
+    text-decoration: none;
+    &:hover {
+      border-bottom: 2px solid $background;
+    }
+  }
+  
 }

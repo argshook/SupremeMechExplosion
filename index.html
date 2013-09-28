@@ -2,17 +2,22 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Galaxian HTML5 game - CodePen</title>
+  <title>Supreme Mech Explosion</title>
   <link rel="stylesheet" href="css/normalize.css">
+  <link href='http://fonts.googleapis.com/css?family=Kavoon|Bubbler+One' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
 </head>
 <body>
 
+<h2 class="title">Supreme Mech Explosion</h2>
+
 <div class="game">
     <div class="info">
-      <div class="score">Score: <span id="score"></span></div>
       <div class="level">Level <span id="level">1</span></div>
+      <div class="audioMuter" onclick="mute()">Music on/off</div>
+      <div class="score">Score <span id="score"></span></div>
     </div>
+    <div id="loading">Click me to play!</div>
     <div class="canvas">
       <canvas id="background" width="360" height="480">
         Whoops, looks like your browser does not support some thing this game need. &lt;canvas&gt; to be specific.
@@ -23,12 +28,22 @@
       <!-- The canvas the ship uses (can only move up one forth the screen.) -->
       <canvas id="ship" width="360" height="480">
       </canvas>
-      <div class="game-over" id="game-over">GAME OVER
-        <p><span onclick="game.restart()">Again!</span></p>
+      <div class="game-over" id="game-over">You're dead :(
+        <p><div class="restartBtn" onclick="game.restart()">Try again!</div></p>
+        <p class="small">(hit R to restart)</p>
+      </div>
+      <div id="level-up">
+        Level up!
       </div>
     </div>
 </div>
-  <script src="js/index.js"></script>
+
+<div class="content">
+  <p>Control the spaceship with <code>arrow keys</code>, shoot with <code>space</code></p>
+  <p>This game was made for learning purposes and is far from ideal. Works best with Chrome.</p>
+  <p>Get source at github. Find me <a href="http://twitter.com/argshook">@argshook</a></p>
+</div>
+  <!-- <script src="js/index.js"></script> -->
   <script src="js/game.js"></script>
 </body>
 </html>

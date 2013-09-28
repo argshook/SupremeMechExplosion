@@ -1,3 +1,41 @@
+@import "bourbon/bourbon";
+
 // colors
 
 $background: hsl(10,25,15);
+
+$light: lighten($background, 40%);
+
+$textColor: #FF7F00;
+
+*, *:before, *:after {
+  //@include box-sizing(border-box);
+}
+
+@include keyframes(levelUp) {
+  0% {
+    opacity: 0;
+    @include transform(translateY(20px));
+  }
+  50% {
+    opacity: 1;
+    @include transform(translateY(0));
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@include keyframes(gameOver) {
+  0% {
+    opacity: 0;
+    @include transform(translateY(20px));
+  }
+  100% {
+    opacity: 1;
+    @include transform(translateY(0));
+  }
+}

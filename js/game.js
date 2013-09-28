@@ -8,6 +8,12 @@ function init() {
   game.init();
 }
 
+document.onkeypress = function(e) {
+  if(e.which === 114) {
+    game.restart();
+  }
+}
+
 /** 
 * Define singleton!
 * Singleton is a type of object
@@ -341,7 +347,7 @@ function Enemy() {
     this.alive = true;
     this.leftEdge = this.x - 40;
     this.rightEdge = this.x + 30;
-    this.bottomEdge = this.y + 180;
+    this.bottomEdge = this.y + 200;
   };
 
   // Move the enemy
@@ -369,7 +375,7 @@ function Enemy() {
       }
       return false;
     } else {
-      this.context.drawImage(imageRepository.enemyDown, this.x, this.y);
+      //this.context.drawImage(imageRepository.enemyDown, this.x, this.y);
       game.playerScore += (10 + game.level);
       game.explosion.get();
       return true;
@@ -739,7 +745,6 @@ function Game() {
       this.backgroundAudio = new Audio("audio/bg.mp3");
       this.backgroundAudio.volume = .7;
       this.backgroundAudio.load();
-      this.backgroundAudio.play();
       this.backgroundAudio.addEventListener('ended', function() {
         this.currentTime = 1;
         this.play();
@@ -790,6 +795,7 @@ function Game() {
   
   this.start = function() {
     this.ship.draw();
+    game.gameStartAudio.play();
     this.backgroundAudio.play();
     animate();
   };
@@ -832,12 +838,15 @@ function Game() {
 function checkReadyState() {
   if(game.gameLevelUpAudio.readyState === 4 && game.gameStartAudio.readyState === 4 && game.backgroundAudio.readyState === 4 && game.gameOverAudio.readyState === 4) {
     window.clearInterval(game.checkAudio);
-    game.start();
-    if(game.gameOverAudio.currentTime > 0) {
-      game.gameOverAudio.pause();
-      game.gameOverAudio.currentTime = 0;
+    document.getElementById('loading').onclick = function() {
+      document.getElementById('loading').style.display = "none";
+      game.backgroundAudio.play();
+      game.start();
+      if(game.gameOverAudio.currentTime > 0) {
+        game.gameOverAudio.pause();
+        game.gameOverAudio.currentTime = 0;
+      }
     }
-    game.gameStartAudio.play();
   }
 }
 
@@ -870,6 +879,10 @@ function animate() {
     game.level += 1;
     game.gameLevelUpAudio.play();
     game.background.speed = game.level;
+    document.getElementById('level-up').style.display = "block";
+    setTimeout(function() {
+      document.getElementById('level-up').style.display = "none";
+    }, 1000);
   }
 
   // Animate game objects
@@ -925,6 +938,16 @@ window.requestAnimFrame = (function(){
       window.setTimeout(callback, 1000 / 60);
     };
 })();
+
+function mute() {
+  if (game.backgroundAudio.volume !== 0) {
+    game.backgroundAudio.volume = 0;
+  }
+  else {
+    game.backgroundAudio.volume = .7;
+  }
+}
+
 
 /**
  * A sound pool to use for the sound effects
