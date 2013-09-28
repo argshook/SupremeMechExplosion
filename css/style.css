@@ -1,11 +1,2 @@
-body {
-  background: #30201d;
-}
-
-canvas {
-  border: 1px solid red;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: transparent;
-}
+body{background:#30201d}canvas{position:absolute;top:0;left:0;background:transparent}#background{z-index:-2}#main{z-index:-1}#ship{z-index:0}
+/*# sourceMappingURL=style.css.map */

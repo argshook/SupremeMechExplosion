@@ -1,14 +1,22 @@
-@import "compass/css3";
+@import "base";
 
 body {
   background: hsl(10,25,15);
 }
 
-
 canvas {
-  border: 1px solid red;
   position: absolute;
   top: 0;
   left: 0;
   background: transparent;
+}
+
+#background {
+  z-index: -2;
+}
+#main {
+  z-index: -1;
+}
+#ship {
+  z-index: 0;
 }
