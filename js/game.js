@@ -1,20 +1,24 @@
 /**
+ *     Supreme Mech Explosion!
+ *
+ *  written in javascript using HTML5 canvas element.
+ *  Made for learning purposes so it's far from perfect.
+ *  Thanks for playing!
+ *
+ *  Contact me for whatever you need to contact me: argshook at gmail dot com
+ */
+
+
+/**
 * Initializes the Game and starts it.
 **/
-
 var game = new Game();
 
 function init() {
   game.init();
 }
 
-document.onkeypress = function(e) {
-  if(e.which === 114) {
-    game.restart();
-  }
-}
-
-/** 
+/**
 * Define singleton!
 * Singleton is a type of object
 * which contains all our images
@@ -75,7 +79,7 @@ var imageRepository = new function() {
 }
 
 /**
- * Custom Pool object. Hlds Bullet
+ * Custom Pool object. Holds Bullet 
  * objects to be managed to prevent
  * garbage collection.
  */
@@ -121,7 +125,6 @@ function Pool(maxSize) {
     return obj;
   }
 
-
   /*
     Grabs the last item in the list and initializes it
     and pushes it to the front of the array.
@@ -132,7 +135,6 @@ function Pool(maxSize) {
       pool.unshift(pool.pop());
     }
   };
-
 
   /*
     Used for the ship to be able to get two bullets at once.
@@ -164,71 +166,7 @@ function Pool(maxSize) {
       }
     }
   };
-
 }
-
-
-/*
-  Creates the Bullet object which the ship fires. The bullets
-  are drawn on the "main" canvas.
- */
-function Bullet(object) {
-  this.alive = false; // Is true if the bullet is currently in use
-
-  var self = object;
-
-  // sets the bullet values
-  this.spawn = function(x, y, speed) {
-    this.x = x;
-    this.y = y;
-    this.speed = speed;
-    this.alive = true;
-  };
-
-  /*
-    Uses a "dirty rectangle" to erase the bullet and moves it.
-    Returns true if the bullet moved off the screen, indicating
-    that the bullet is ready to be cleared by the pool,
-    otherwise draws the bullet.
-   */
-  this.draw = function() {
-    this.context.clearRect(this.x-1, this.y, this.width+1, this.height);
-    //this.context.clearRect(this.x-1, this.y, imageRepository.enemyBullet.width+1, );
-    this.y -= this.speed;
-
-    if (this.isColliding) {
-      return true;
-    }
-
-    if(self === "bullet" && this.y <= 0 - this.height) {
-      return true;
-    } else if (self === "enemyBullet" && this.y >= this.canvasHeight) {
-      return true;
-    } else {
-      if(self === "bullet") {
-        this.context.drawImage(imageRepository.bullet, this.x, this.y);
-      } else if (self === "enemyBullet") {
-         this.context.drawImage(imageRepository.enemyBullet, this.x, this.y);
-        //console.log(imageRepository.enemyBullet.height);
-      }
-
-      return false;
-    }
-  };
-
-  /*
-    Resets the bullet values
-   */
-  this.clear = function() {
-    this.x = 0;
-    this.y = 0;
-    this.speed = 0;
-    this.alive = false;
-    this.isColliding = false;
-  };
-}
-Bullet.prototype = new Drawable();
-
 
 /**
  * Create the Ship object that the player controls.
@@ -284,10 +222,6 @@ function Ship() {
       }
       if(KEY_STATUS.up) {
         this.y -= this.speed;
-        /*
-        this.canvasHeight/4*3 is used because we want
-        the ship to be able to go up only 1/4th of the screen;
-         */
         if(this.y <= 0) {
           this.y = 0;
         }
@@ -304,9 +238,7 @@ function Ship() {
     if (!this.isColliding) {
       this.draw();
     } else {
-      this.alive = false;
-      this.context.drawImage(imageRepository.spaceshipDown, this.x, this.y);
-      game.gameOver();
+      this.die();
     }
 
     if(KEY_STATUS.space && counter >= fireRate) {
@@ -324,8 +256,82 @@ function Ship() {
     game.laser.get();
   };
 
+  // Die, you mother ...!
+  this.die = function() {
+    game.playerLives -= 1;
+    if(game.playerLives <= 0) {
+      this.context.drawImage(imageRepository.spaceshipDown, this.x, this.y);
+      this.alive = false;
+      game.gameOver();
+      document.getElementById('lives').innerHTML = "";
+    } else {
+      game.gameShipHitAudio.play();
+      game.restart("continue");
+    }
+  };
+
 }
 Ship.prototype = new Drawable();
+
+/*
+  Creates the Bullet object which the ship fires. The bullets
+  are drawn on the "main" canvas.
+ */
+function Bullet(object) {
+  this.alive = false; // Is true if the bullet is currently in use
+
+  var self = object;
+
+  // sets the bullet values
+  this.spawn = function(x, y, speed) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.alive = true;
+  };
+
+  /*
+    Uses a "dirty rectangle" to erase the bullet and moves it.
+    Returns true if the bullet moved off the screen, indicating
+    that the bullet is ready to be cleared by the pool,
+    otherwise draws the bullet.
+   */
+  this.draw = function() {
+    // TODO: use dirty circle, because the bullets are circular
+    this.context.clearRect(this.x-1, this.y, this.width+1, this.height);
+    this.y -= this.speed;
+
+    if (this.isColliding) {
+      return true;
+    }
+
+    if(self === "bullet" && this.y <= 0 - this.height) {
+      return true;
+    } else if (self === "enemyBullet" && this.y >= this.canvasHeight) {
+      return true;
+    } else {
+      if(self === "bullet") {
+        this.context.drawImage(imageRepository.bullet, this.x, this.y);
+      } else if (self === "enemyBullet") {
+        this.context.drawImage(imageRepository.enemyBullet, this.x, this.y);
+      }
+
+      return false;
+    }
+  };
+
+  /*
+    Resets the bullet values
+   */
+  this.clear = function() {
+    this.x = 0;
+    this.y = 0;
+    this.speed = 0;
+    this.alive = false;
+    this.isColliding = false;
+  };
+}
+Bullet.prototype = new Drawable();
 
 /**
  * Create the enemy ship object.
@@ -433,6 +439,8 @@ function Drawable() {
   this.draw = function() {
   };
   this.move = function() {
+  };
+  this.die = function() {
   };
   
   this.isCollidableWith = function(object) {
@@ -680,6 +688,9 @@ function Game() {
   
   this.init = function() {
 
+    this.playerLives = 3;
+    this.playerScore = 0;
+
     // get the canvas elements
     this.bgCanvas = document.getElementById('background');
     this.shipCanvas = document.getElementById('ship');
@@ -702,9 +713,9 @@ function Game() {
       Ship.prototype.canvasWidth = this.shipCanvas.width;
       Ship.prototype.canvasHeight = this.shipCanvas.height;
 
-      Bullet.prototype.context = this.shipContext;
-      Bullet.prototype.canvasWidth = this.shipCanvas.width;
-      Bullet.prototype.canvasHeight = this.shipCanvas.height;
+      Bullet.prototype.context = this.mainContext;
+      Bullet.prototype.canvasWidth = this.mainCanvas.width;
+      Bullet.prototype.canvasHeight = this.mainCanvas.height;
 
       Enemy.prototype.context = this.mainContext;
       Enemy.prototype.canvasWidth = this.mainCanvas.width;
@@ -716,12 +727,12 @@ function Game() {
       
       this.level = 1;
 
-      // initialize the ship object
       this.ship = new Ship();
       // set the ship to start near the bottom middle of the canvas
       this.shipStartX = this.shipCanvas.width/2 - imageRepository.spaceship.width/2;
       this.shipStartY = this.shipCanvas.height - imageRepository.spaceship.height;
       this.ship.init(this.shipStartX, this.shipStartY, imageRepository.spaceship.width, imageRepository.spaceship.height);
+
 
       // Initialize the enemy pool object
       this.enemyPool = new Pool(30);
@@ -733,8 +744,6 @@ function Game() {
 
       // Start QuadTree
       this.quadTree = new QuadTree({x:0,y:0,width:this.mainCanvas.width,height:this.mainCanvas.height});
-
-      this.playerScore = 0;
 
       this.laser = new SoundPool(10);
       this.laser.init("laser");
@@ -765,6 +774,11 @@ function Game() {
       this.gameLevelUpAudio.volume = .9;
       this.gameLevelUpAudio.load();
 
+      this.gameShipHitAudio = new Audio("audio/shipHit.mp3");
+      this.gameShipHitAudio.loop = false;
+      this.gameShipHitAudio.volume = .2;
+      this.gameShipHitAudio.load();
+
       this.checkAudio = window.setInterval(function() {checkReadyState()}, 1000);
 
       return true;
@@ -792,7 +806,6 @@ function Game() {
 
 
   // start the animation loop
-  
   this.start = function() {
     this.ship.draw();
     game.gameStartAudio.play();
@@ -802,13 +815,16 @@ function Game() {
   
   // Game over
   this.gameOver = function() {
+    game.playerLives = 3;
     game.gameOverAudio.play();
     document.getElementById('game-over').style.display = "block";
+    return true;
   };
 
   // Restart the game
-  this.restart = function() {
-    document.getElementById('game-over').style.display = "none";
+  this.restart = function(condition) {
+    condition = condition || "";
+    
     this.bgContext.clearRect(0,0, this.bgCanvas.width, this.bgCanvas.height);
     this.shipContext.clearRect(0,0, this.shipCanvas.width, this.shipCanvas.height);
     this.mainContext.clearRect(0,0, this.mainCanvas.width, this.mainCanvas.height);
@@ -821,15 +837,24 @@ function Game() {
     this.spawnWave();
     this.enemyBulletPool.init("enemyBullet");
 
-    this.playerScore = 0;
-    this.level = 1;
-    this.background.speed = 1;
+   for(var i = 1, lives = ""; i <= game.playerLives; i++) {
+      lives += '<img src="images/live.png" />';
+    }
+    document.getElementById('lives').innerHTML = lives;
 
-    this.start();
-    game.gameStartAudio.play();
+    if(condition !== "continue") {
+      document.getElementById('game-over').style.display = "none";
 
+      this.playerScore = 0;
+      this.playerLives = 3;
+      this.level = 1;
+      this.background.speed = 1;
+
+      this.start();
+      game.gameStartAudio.play();
+
+    }
   }
-
 }
 
 /**
@@ -904,7 +929,7 @@ function detectCollision(){
 
   for (var x = 0, len = objects.length; x < len; x++) {
     game.quadTree.findObjects(obj = [], objects[x]);
-    
+
     for (var y = 0, length = obj.length; y < length; y++) {
       // DETECT COLLISION ALGORITHM
       if (objects[x].collidableWith === obj[y].type &&
@@ -942,9 +967,11 @@ window.requestAnimFrame = (function(){
 function mute() {
   if (game.backgroundAudio.volume !== 0) {
     game.backgroundAudio.volume = 0;
+    document.getElementById('musicMuter').innerHTML = "Off";
   }
   else {
     game.backgroundAudio.volume = .7;
+    document.getElementById('musicMuter').innerHTML = "On";
   }
 }
 
@@ -1004,7 +1031,7 @@ KEY_CODES = {
 
 /**
  * Creates the array to hold the KEY_CODES and sets all their
- * values ti fakse, Checking true/false is the quickest way to
+ * values to false, Checking true/false is the quickest way to
  * check status of a key press and which one was pressed
  * when determining when to move and which direction.
  */
@@ -1041,3 +1068,15 @@ document.onkeyup = function(e) {
     KEY_STATUS[KEY_CODES[keyCode]] = false;
   }
 };
+
+/*
+  Other various keypressing stuff
+ */
+document.onkeypress = function(e) {
+  //restart the game only if the player is dead
+  if(e.which === 114 && document.getElementById('game-over').style.display === "block") { // "r" to restart the game
+    game.restart();
+  } else if (e.which === 109) { // "m" to mute/unmute the music
+    mute();
+  }
+}

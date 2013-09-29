@@ -49,9 +49,9 @@ h2.title {
     }
 
     .audioMuter {
-      width: 100px;
+      width: 120px;
       left: 50%;
-      margin-left: -50px;
+      margin-left: -60px;
       &:hover {
         text-shadow: 0 0 2px $light;
       }
@@ -118,6 +118,18 @@ h2.title {
     }
     #ship {
       //z-index: 22;
+    }
+  }
+
+  #lives {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 110;
+    img {
+      display: block;
+      float: left;
+      margin-right: 5px;
     }
   }
 
@@ -190,7 +202,7 @@ h2.title {
 }
 
 .content {
-  max-width: 550px;
+  max-width: 480px;
   margin: 30px auto;
   padding: 10px;
   background: lighten($background, 5%);
