@@ -760,7 +760,7 @@ function Game() {
       }, false);
 
       this.backgroundAudio2 = new Audio("audio/bg2.mp3");
-      this.backgroundAudio2.volume = .7;
+      this.backgroundAudio2.volume = 1;
       this.backgroundAudio2.load();
       this.backgroundAudio2.addEventListener('ended', function() {
         this.currentTime = 1;
