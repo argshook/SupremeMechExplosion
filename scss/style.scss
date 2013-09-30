@@ -2,7 +2,7 @@
 
 body {
   background: $background;
-  font-family: 'Bubbler One', sans-serif;
+  font-family: 'Offside', sans-serif;
 }
 
 
@@ -42,10 +42,10 @@ h2.title {
     box-shadow: 0 0 5px 1px $background;
     > div {
       position: absolute;
-      top: 5px;
+      top: 7px;
       color: $textColor;
       cursor: default;
-      font-size: 1.2em;
+      font-size: 0.8em;
     }
 
     .audioMuter {
@@ -78,14 +78,14 @@ h2.title {
     position: absolute;
     display: block;
     z-index: 1000;
-    font-size: 3em;
+    font-size: 2em;
     text-align: center;
     line-height: 480px;
     vertical-align: middle;
     color: $light;
     text-shadow: 0 1px 1px darken($background, 3%);
     width: 100%;
-    height: 100%;
+    height: 480px;
     background: $background;
     cursor: pointer;
     @include transition(all 0.2s linear);
@@ -160,7 +160,7 @@ h2.title {
     
     text-align: center;
     
-    font-size: 2em;
+    font-size: 1.5em;
     cursor: default;
     display: none;
     
