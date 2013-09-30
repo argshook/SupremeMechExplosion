@@ -759,6 +759,14 @@ function Game() {
         this.play();
       }, false);
 
+      this.backgroundAudio2 = new Audio("audio/bg2.mp3");
+      this.backgroundAudio2.volume = .7;
+      this.backgroundAudio2.load();
+      this.backgroundAudio2.addEventListener('ended', function() {
+        this.currentTime = 1;
+        this.play();
+      }, false);
+
       this.gameOverAudio = new Audio("audio/gameOver.mp3");
       this.gameOverAudio.loop = false;
       this.gameOverAudio.volume = .8;
@@ -854,6 +862,18 @@ function Game() {
       game.gameStartAudio.play();
 
     }
+  }
+}
+
+function switchBackgroundAudio() {
+  if(game.backgroundAudio.volume === .7) {
+    game.backgroundAudio.volume = 0;
+    game.backgroundAudio.pause();
+    game.backgroundAudio2.play();
+  } else {
+    game.backgroundAudio.volume = .7;
+    game.backgroundAudio2.pause();
+    gamebackgroundAudio.play();
   }
 }
 
@@ -1078,5 +1098,7 @@ document.onkeypress = function(e) {
     game.restart();
   } else if (e.which === 109) { // "m" to mute/unmute the music
     mute();
+  } else if (e.which === 110) { // "n" to swich between background tracks
+    switchBackgroundAudio();
   }
 }
