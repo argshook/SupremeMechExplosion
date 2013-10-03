@@ -42,16 +42,17 @@ h2.title {
     box-shadow: 0 0 5px 1px $background;
     > div {
       position: absolute;
-      top: 7px;
       color: $textColor;
       cursor: default;
       font-size: 0.8em;
+      padding: 8px 10px;
     }
 
     .audioMuter {
       width: 120px;
       left: 50%;
       margin-left: -60px;
+      padding: 8px 10px;
       &:hover {
         text-shadow: 0 0 2px $light;
       }
@@ -61,13 +62,18 @@ h2.title {
     }
 
     .level {
-      left: 10px;
+      left: 0;
+      border-right: 1px solid #050100;
+      box-shadow: 1px 0 0 0px #3C1D18;
+      padding: 8px 10px;
       > #level {
         
       }
     }
     .score {
-      right: 10px;
+      right: 0;
+      border-left: 1px solid #050100;
+      box-shadow: -1px 0 0 0px #3C1D18;
       > #score {
         
       }
